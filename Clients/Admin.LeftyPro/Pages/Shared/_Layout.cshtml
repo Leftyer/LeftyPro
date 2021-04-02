@@ -1,0 +1,152 @@
+﻿
+@{
+    Layout = "_LayoutMain.cshtml";
+}
+@section css{
+    <link href="~/css/lefty.admin.css?t=3333" rel="stylesheet" />
+    @await RenderSectionAsync("style", false)
+}
+
+<div id="LAY_app" class="layadmin-tabspage-none ">
+    <div class="layui-layout layui-layout-admin">
+        <!--header start-->
+        @{await Html.RenderPartialAsync("_PartialHeader");}
+        <!--header end-->
+        <!--side start-->
+        @{await Html.RenderPartialAsync("_PartialSide");}
+        <!--side end-->
+        <!--Content start-->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                @RenderBody()
+            </div>
+        </div>
+        <!--Content end-->
+    </div>
+</div>
+@section js{
+    <script>
+        var $ = layui.$,
+            layer = layui.layer;
+        var Instance = (function (instance) {
+            instance.Configs = (function (config) {
+                return config;
+            })({});
+
+            instance.Managers = (function (manager) {
+                manager.loadMsgIcon = function () {
+                    $.get('/Areas/SystemModules/MsgRecordPlugin/Msgrecord/MsgrecordIndex?handler=MsgIcon', function (result) {
+                        if (result.data == 1) {
+                            $("#msgIcon").show();
+                            var sideItem = Utilitys.Methods.DBQueryCache(0, 'NoticeMsgTb').noticeMsgCount;
+                            if (sideItem == null || sideItem.lenght <= 0) {
+                                sideItem = 0;
+                            }
+
+                            if (sideItem > 0) {
+                                return false;
+                            }
+                            layer.open({
+                                type: 1
+                                , title: false
+                                , closeBtn: false
+                                , area: '500px;'
+                                , shade: 0.5
+                                , id: 'noticeMsg'
+                                , btn: ['前往消息管理', '关闭']
+                                , btnAlign: 'c'
+                                , moveType: 1
+                                , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><span style="font-size:18px;">有未读消息</span>，【<i class="layui-icon layui-icon-face-smile" style="color:#FFB800;"></i>有些人有些事错过了就错过了！<span style="font-size:18px;">But</span><br/> <br/><br> <br/><i class="layui-icon layui-icon-face-smile" style="color:#FFB800;"></i><span style="font-size:18px;">后面还有更好的呐~~~】</span></div>'
+                                , yes: function (layero) {
+                                    location.href = "/Areas/SystemModules/MsgRecordPlugin/Msgrecord/MsgrecordIndex";
+                                }
+                            });
+                            Utilitys.Methods.DBSetCache(0, 'NoticeMsgTb', 'noticeMsgCount', ++sideItem);
+
+                        }
+                    });
+
+
+
+                }
+                manager.sideStatusRecord = function (n) {
+
+                    $("#LAY-system-side-menu li").each(function () {
+                        var i = $(this).data("key");
+                        var val = $(this).attr("class");
+                        var sideItem = Utilitys.Methods.DBQueryCache(0, 'SideStatusTable' + i).sideItem;
+                        if (n == 0) {
+                            if (sideItem == "layui-nav-item layui-nav-itemed") {
+                                $(this).attr("class", sideItem);
+                            }
+                        } else {
+                            if (sideItem == null || sideItem.lenght <= 0 || sideItem != val) {
+                                Utilitys.Methods.DBSetCache(0, 'SideStatusTable' + i, 'sideItem', val);
+                                sideItem = val;
+                            }
+                            $(this).attr("class", sideItem);
+                        }
+
+                    });
+                }
+                manager.clickLoad = function () {
+                    $("#LAY_app_flexible").click(function () {
+                        var el = "#LAY_app";
+                        if ($(el).hasClass('layadmin-side-shrink')) {
+                            $(el).removeClass("layadmin-side-shrink");
+                        } else {
+                            $(el).addClass("layadmin-side-shrink");
+
+                        }
+
+                    });
+
+                    $("#setPwd").click(function () {
+                        layer.open({
+                            type: 1,
+                            offset: 'rt',
+                            area: ['280px', '260px'],
+                            content: $('#setpwdView')
+                        });
+
+                    });
+
+                    $("#logout").click(function () {
+                        $.get("/Areas/SystemModules/AccountPlugin/Login/LoginIndex?handler=LogOut", function () {
+                            window.location.href = "/";
+                        });
+                    });
+                    $("#btnMsg").click(function () {
+                        location.href = "/Areas/SystemModules/MsgRecordPlugin/Msgrecord/MsgrecordIndex";
+                    });
+
+                    $("#LAY-system-side-menu").click(function () {
+                        manager.sideStatusRecord(1);
+                    });
+                }
+
+
+                manager.Load = function () {
+                    manager.clickLoad();
+                    manager.sideStatusRecord(0);
+                    manager.loadMsgIcon();
+                }
+                return manager;
+            })({});
+
+            instance.Init = function () {
+                instance.Managers.Load();
+            }
+            return instance;
+        })({});
+
+
+
+
+        $(function () {
+            Instance.Init();
+
+        });
+    </script>
+    @await RenderSectionAsync("script", false)
+}

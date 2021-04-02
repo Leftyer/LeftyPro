@@ -1,0 +1,191 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.Token = Model.UserToken;
+}
+
+@section style{
+    <style>
+        .row-card-info .layui-card-body {
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+        }
+
+            .row-card-info .layui-card-body span i {
+                font-size: 30px;
+            }
+
+        .versionInfo .layui-text {
+            padding: 0 15px;
+        }
+
+        .versionInfo .layui-table {
+            margin: 0;
+        }
+
+        .versionInfo table td, .versionInfo table th {
+            height: 34px;
+            line-height: 34px;
+        }
+    </style>
+}
+
+@section script{
+    <script src="~/js/echarts.min.js"></script>
+    <script src="~/js/china.js"></script>
+    <script src="~/js/index.js"></script>
+}
+
+<div class="layui-fluid">
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-row layui-col-space15">
+                <div style="padding: 20px;background-color:#F2F2F2;">
+                    <div class="layui-row layui-col-space15 row-card-info">
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-body" title="点赞数量">
+                                    <span>
+                                        <i class="layui-icon layui-icon-praise" style="color:#FF5722;">200</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-body" title="活跃流量">
+                                    <span>
+                                        <i class="layui-icon layui-icon-chart" style="color:#FFB800;">800</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-body" title="日志数量">
+                                    <span>
+                                        <i class="layui-icon layui-icon-notice" style="color:#01AAED;">15</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <div class="layui-card">
+                                <div class="layui-card-body" title="用户数量">
+                                    <span>
+                                        <i class="layui-icon layui-icon-group" style="color:#5FB878;">30</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="layui-col-md4" style="padding:0;">
+            <div class="layui-card versionInfo">
+                <div class="layui-card-body layui-text">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>当前版本</td>
+                                <td>
+                                    <span>
+                                        V1.0.0 Pro
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>基于框架</td>
+                                <td>
+                                    <span>
+                                        ASP.Net 5 / Docker / Layui / Sqlsugar
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>主要特色</td>
+                                <td>跨平台/ 清爽 / 极简</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="layui-row layui-col-space15">
+
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">全国合作城市分布图</div>
+                <div class="layui-card-body layui-col-space15" style="background-color: #F2F2F2">
+
+                    <div class="layui-carousel layadmin-carousel layadmin-dataview layui-col-space15" id="dataMapViews">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md8">
+            <div class="layui-card" style="margin-bottom:2px;">
+                <div class="layui-card-header">效果报告</div>
+                <div class="layui-card-body layadmin-takerates">
+                    <div class="layui-progress" lay-showpercent="yes">
+                        <h3>转化率（日同比 28% <span class="layui-edge layui-edge-top" lay-tips="增长" lay-offset="-15"></span>）</h3>
+                        <div class="layui-progress-bar" lay-percent="65%" style="width: 65%;"><span class="layui-progress-text">65%</span></div>
+                    </div>
+                    <div class="layui-progress" lay-showpercent="yes">
+                        <h3>签到率（日同比 11% <span class="layui-edge layui-edge-bottom" lay-tips="下降" lay-offset="-15"></span>）</h3>
+                        <div class="layui-progress-bar layui-bg-orange" lay-percent="32%" style="width: 32%;"><span class="layui-progress-text">32%</span></div>
+                    </div>
+                    <div class="layui-progress" lay-showpercent="yes">
+                        <h3>浏览率</h3>
+                        <div class="layui-progress-bar layui-bg-red" lay-percent="90%" style="width: 90%;"><span class="layui-progress-text">90%</span></div>
+                    </div>
+                    <div class="layui-progress" lay-showpercent="yes">
+                        <h3>注册率</h3>
+                        <div class="layui-progress-bar layui-bg-blue" lay-percent="70%" style="width: 70%;"><span class="layui-progress-text">70%</span></div>
+                    </div>
+                    <div class="layui-progress" lay-showpercent="yes">
+                        <h3>登录率</h3>
+                        <div class="layui-progress-bar layui-bg-black" lay-percent="98%" style="width: 98%;"><span class="layui-progress-text">98%</span></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+                <div id="dataoverview" style="width:100%;height:40rem;"></div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+

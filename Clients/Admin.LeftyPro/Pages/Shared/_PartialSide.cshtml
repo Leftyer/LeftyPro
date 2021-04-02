@@ -1,0 +1,44 @@
+﻿@using Admin.LeftyPro
+@using SystemsModules.Domains
+@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+
+@{
+
+    List<PagesModel> sourceData = await BaseCore.Instance.PageDataAsync(ViewBag.Token) ?? new List<PagesModel>();
+    List<PagesModel> pageData = sourceData.Where(m => m.ParentLevel == string.Empty).ToList() ?? new List<PagesModel>();
+
+
+}
+
+<div class="layui-side layui-side-menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href="">
+            <span>@BaseCore.Instance.SystemName</span>
+        </div>
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+
+            @foreach (var item in pageData.OrderByDescending(m => m.PageSort).ToList())
+            {
+                var childList = sourceData.Where(m => m.ParentLevel == item.Id).OrderByDescending(m => m.PageSort).ToList();
+                if (childList.Count > 0)
+                {
+                    <li data-namedata-jump class="layui-nav-item" data-key="@pageData.IndexOf(item)">
+                        <!--layui-nav-itemed-->
+                        <a href="javascript:;" lay-tips="@item.PageTitle" lay-direction="2"> <i class="layui-icon @item.PageIconVal"></i> <cite>@item.PageTitle</cite> <span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            @foreach (var childItem in childList)
+                            {
+                                <dd data-key="@childList.IndexOf(childItem)"> <a href="@(childItem.PagePathUrl)">@childItem.PageTitle</a></dd>
+                            }
+                        </dl>
+                    </li>
+
+                }
+            }
+
+
+        </ul>
+    </div>
+</div>

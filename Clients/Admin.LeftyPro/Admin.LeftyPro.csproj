@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>491b63fc-7209-40bc-a42c-a2edc2ea442c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\CachesModules\CachesModules.csproj" />
+    <ProjectReference Include="..\..\Modules\LearnLibsModules\LearnLibsModules.csproj" />
+    <ProjectReference Include="..\..\Modules\LivesModules\LivesModules.csproj" />
+    <ProjectReference Include="..\..\Modules\SystemsModules\SystemsModules.csproj" />
+  </ItemGroup>
+
+</Project>
