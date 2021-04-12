@@ -3,7 +3,7 @@ using System.Linq;
 using LivesModules.Utilitys;
 using Leftyer.Domains.Utilitys;
 
-namespace SystemsModules.Domains
+namespace LivesModules.Domains
 {
     [TestClass]
     public class DBBuild
@@ -12,7 +12,7 @@ namespace SystemsModules.Domains
         public void BuildEntitys()
         {
             using var db = new DBCore(ConfigCore.Instance.DBCon).Db;
-            db.DbFirst.IsCreateAttribute().CreateClassFile(GetBuildPath("SystemDomains\\DBDomain\\"), "SystemsModules.Domains");
+            db.DbFirst.IsCreateAttribute().CreateClassFile(GetBuildPath("LiveDomains\\DBDomain\\"), "LivesModules.Domains");
         }
 
         string GetBuildPath(string path)

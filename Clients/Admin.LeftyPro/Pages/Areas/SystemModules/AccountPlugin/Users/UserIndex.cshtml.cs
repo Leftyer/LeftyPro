@@ -11,10 +11,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.AccountPlugin.Users
 {
     public class UserIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<UserIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public UserIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public UserIndexModel(ILogger<UserIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;

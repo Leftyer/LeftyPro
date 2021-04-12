@@ -7,8 +7,9 @@
 */
     public class EnumsCore : Leftyer.Domains.Utilitys.EnumsCore
     {
-        public enum UserType { Administrator, Admin, Employee }
+        public enum MemoLevelType { 一般,重要}
+        public enum ContactType{Phone,Mail,QQ,Wechat}
 
-        public enum UserStatus { Disable, Usable }
+        
     }
 }

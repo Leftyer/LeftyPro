@@ -4,3 +4,107 @@
     ViewData["Title"] = "我的收藏";
     ViewBag.Token = Model.UserToken;
 }
+
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>我的收藏</legend>
+</fieldset>
+ 
+<div class="layui-tab layui-tab-brief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">备忘录</li>
+    <li>联系人</li>
+    <li>照片</li>
+    <li>音乐</li>
+    <li>电影</li>
+    <li>书籍</li>
+    <li>文章</li>
+  </ul>
+
+
+
+  <div class="layui-tab-content">
+    
+<div class="layui-tab-item layui-show">
+  
+<iframe id="ifrMain" name="ifrMain" frameborder="0" scrolling="yes" src="/Areas/LiveModules/MyFavoritePlugin/Memo/MemoIndex" style="height:100%;visibility:inherit; width:100%;z-index:1;"></iframe>
+
+</div>
+        
+
+    <div class="layui-tab-item">
+      <iframe id="ifrMain" name="ifrMain" frameborder="0" scrolling="yes" src="/Areas/LiveModules/MyFavoritePlugin/Contacts/ContactsIndex" style="height:100%;visibility:inherit; width:100%;z-index:1;"></iframe>
+    </div>
+    <div class="layui-tab-item">内容3</div>
+    <div class="layui-tab-item">内容4</div>
+    <div class="layui-tab-item">内容5</div>
+    <div class="layui-tab-item">内容6</div>
+    <div class="layui-tab-item">内容7</div>
+
+
+  </div>
+
+
+
+</div> 
+
+
+
+
+
+
+@section style{
+   <style>
+       .layui-card-body{
+           height: 450px;
+       }
+       .layui-tab,.layui-tab-content,.layui-tab-item{
+         height:100%;
+       }
+
+   </style>
+}
+
+@section script{
+    <script>
+        var $ = layui.$, layer = layui.layer, form = layui.form, table = layui.table, laydate = layui.laydate,layedit = layui.layedit,laypage = layui.laypage;
+        var Instace = (function (instance) {
+
+            instance.Configs = (function (config) {
+                return config;
+            })({});
+
+            instance.Managers = (function (manager) {
+
+               
+
+
+                manager.Load = function () {
+                  layedit.build('demo',{
+  height: 400 //设置编辑器高度
+});
+
+ laypage.render({
+    elem: 'demo0'
+    ,count: 50 //数据总数
+  });
+                };
+
+                return manager;
+            })({});
+
+            instance.Init = function () {
+                instance.Managers.Load();
+            };
+            return instance;
+        })({});
+
+        $(function () {
+            Instace.Init();
+        });
+    </script>
+
+
+
+}
+
+

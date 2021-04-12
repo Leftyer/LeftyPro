@@ -11,10 +11,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.MsgRecordPlugin.MsgRecord
 {
     public class MsgRecordIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<MsgRecordIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public MsgRecordIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public MsgRecordIndexModel(ILogger<MsgRecordIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;

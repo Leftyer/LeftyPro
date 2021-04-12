@@ -12,10 +12,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.PagePlugin.Pages
 {
     public class PageIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<PageIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public PageIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public PageIndexModel(ILogger<PageIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;

@@ -11,6 +11,6 @@ namespace LivesModules.Utilitys
         public static ConfigCore Instance => new();
         string Root => "192.168.159.133";
         public string RedisDBDefault => $"{Root}:6379,password=zhangxueliangvip,connectTimeout=1000,connectRetry=1,syncTimeout=1000";
-        public string DBCon => $@"Data Source={Root};Initial Catalog=DBSystems;User ID=sa;PassWord=sqlserverDB2019";
+        public string DBCon => $@"Data Source={Root};Initial Catalog=DBLives;User ID=sa;PassWord=sqlserverDB2019";
     }
 }

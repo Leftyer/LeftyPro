@@ -23,6 +23,25 @@ var Utilitys = (function (instance) {
                 element.classList.remove(disabledName);
             }
         };
+        method.CacheSet=function(param){
+            if (param.isPersistence == 1) {
+                layui.data(param.tab, { key: param.key, value: param.val });
+                return false;
+            }
+            layui.sessionData(param.tab, { key: param.key, value: param.val });
+            return false;
+        }
+        method.CacheDel=function(param){
+            if (param.isPersistence == 1) {
+                layui.data(param.tab, { key: param.key, remove: true });
+                return false;
+            }
+            layui.sessionData(param.tab, { key: param.key, remove: true });
+            return false;  
+        }
+        method.CacheQuery=function(param){
+            return param.isPersistence == 1 ? layui.data(param.tab) : layui.sessionData(param.tab);
+        }
 
         method.DBSetCache = function (isPersistence, tab, key, val) {
             if (isPersistence == 1) {
@@ -33,6 +52,8 @@ var Utilitys = (function (instance) {
             return false;
         };
 
+        
+
         method.DBDelCache = function (isPersistence, tab, key) {
             if (isPersistence == 1) {
                 layui.data(tab, { key: key, remove: true });
@@ -41,6 +62,7 @@ var Utilitys = (function (instance) {
             layui.sessionData(tab, { key: key, remove: true });
             return false;
         };
+        
 
         method.DBQueryCache = function (isPersistence, tab) {
             return isPersistence == 1 ? layui.data(tab) : layui.sessionData(tab);

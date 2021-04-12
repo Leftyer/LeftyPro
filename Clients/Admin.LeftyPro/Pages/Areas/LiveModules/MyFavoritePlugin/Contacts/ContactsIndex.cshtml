@@ -1,0 +1,307 @@
+@page
+@model Admin.LeftyPro.Pages.Areas.LiveModules.MyFavoritePlugin.Contacts.ContactsIndexModel
+@{
+    Layout = "/Pages/Shared/_LayoutMain.cshtml";
+    ViewData["Title"] = "联系人页面";
+    ViewBag.Token = Model.UserToken;
+}
+
+<div class="layui-fluid">
+    <form class="layui-form margin_top layui-form-pane" id="queryForm">
+
+        <fieldset class="layui-elem-field">
+            <div class="layui-field-box">
+
+                <div class="layui-form-item">
+                    <!--名称 Start-->
+                    <label class="layui-form-label">联系人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="ContactNameSearch" id="ContactNameSearch" placeholder="请输入联系人" class="layui-input">
+                    </div>
+                    <!--名称 End-->
+                    <!--创建时间 Start-->
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="StartCTime" id="StartCTime" class="layui-input" readonly="readonly">
+                    </div>
+                    <div class="layui-form-mid">-</div>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="EndCTime" id="EndCTime" class="layui-input" readonly="readonly">
+                    </div>
+                    <!--创建时间 End-->
+                    <!--按钮 Start-->
+                    <button type="button" class="layui-btn" data-type="reload" id="btnSearch"><i class="layui-icon">&#xe615;</i>查询</button>
+                    <button type="reset" class="layui-btn layui-btn-primary"><i class="layui-icon">&#x1002;</i>重置</button>
+                    <!--按钮 End-->
+                </div>
+
+            </div>
+        </fieldset>
+    </form>
+    <div class="layui-btn-group operation">
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="AddData">
+            <i class="layui-icon">&#xe654;</i>添加
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="RemoveData">
+            <i class="layui-icon">&#xe640;</i>批量删除
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="ExportData" onclick="window.location.href=' ContactsIndex?handler=DownloadData';">
+            <i class="layui-icon">&#xe601;</i>导出
+        </button>
+    </div>
+    <table class="layui-hide" id="pageData"></table>
+</div>
+
+
+
+<form class="layui-form margin_top layui-form-pane" lay-filter="refreshFilter" id="addAndEdit" style="display:none;">
+    <div class="layui-field-box">
+        <input type="hidden" name="Id" id="Id" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系人</label>
+            <div class="layui-input-block">
+                <input type="text" name="ContactName" id="ContactName" placeholder="请输入联系人姓名" class="layui-input">
+            </div>
+        </div>
+<div class="layui-form-item">
+            <label class="layui-form-label">联系信息</label>
+            <div class="layui-input-block">
+                <input type="text" name="ContactContent" id="ContactContent" placeholder="请输入联系人信息" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-block">
+                <select name="ContactType" id="ContactType">
+                    @foreach (var item in Model.GetContactType())
+                    {
+                        <option value="@item.Split('_')[0]">@item.Split('_')[1]</option>
+                    }
+
+                </select>
+
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:10%;">
+            <div class="layui-input-block margin_left_30" style="text-align:center;margin-left:0;">
+                <button type="button" class="layui-btn" lay-submit lay-filter="sub" id="btn_sub">保存</button>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+
+
+
+
+@section css{
+}
+
+@section js{
+    <script>
+        var $ = layui.$, layer = layui.layer, form = layui.form, table = layui.table, laydate = layui.laydate;
+        var Instace = (function (instance) {
+
+            instance.Configs = (function (config) {
+                return config;
+            })({});
+
+            instance.Managers = (function (manager) {
+
+                manager.pageTable = function () {
+                    table.render({
+                        elem: '#pageData'
+                        , url: 'ContactsIndex?handler=PageData'
+                        , cols: [[
+                            { type: 'checkbox', fixed: 'left' }
+                            , { field: 'hideId', hide: true }
+                            , { field: 'displayID', width: 80, title: 'ID', fixed: 'left' }
+                            , { field: 'displayContactName', title: '联系人'}
+                            , { field: 'displayContactContent', title: '联系人信息' }
+                            , { field: 'displayContactType', title: '联系方式' }
+                            , { field: 'displayCTime', title: '创建时间', sort: true }
+                            , { field: 'displayUTime', title: '最新时间', sort: true }
+                            , { field: 'displayOperation', title: '操作', fixed: 'right',width:120}
+                        ]]
+                        , id: 'pageData'
+                        , page: true
+                        , request: {
+                            pageName: 'PageIndex',
+                            limitName: 'PageSize'
+                        }
+                        , even: true
+
+                    });
+                }
+
+                manager.active = {
+                    reload: function () {
+                        table.reload('pageData', {
+                            page: {
+                                curr: 1
+                            }
+                            , where: {
+                                MemoContent: $('#ContactNameSearch').val(),
+                                StartCTime: $("#StartCTime").val(),
+                                EndCTime: $("#EndCTime").val()
+                            }
+                        });
+                    }
+                };
+
+                manager.btnSearch = function () {
+                    $('#btnSearch').on('click', function () {
+                        var type = $(this).data('type');
+                        manager.active[type] ? manager.active[type].call(this) : '';
+                    });
+                }
+
+                manager.dateTime = function () {
+                    laydate.render({
+                        elem: '#StartCTime'
+                    });
+                    laydate.render({
+                        elem: '#EndCTime'
+                    });
+                }
+
+                manager.AddAndEditExc = function () {
+                    form.on('submit(sub)', function (data) {
+                        Utilitys.Methods.BtnDisabled("#btn_sub", 1);
+                        $.post('ContactsIndex?handler=AddAndEditExc', data.field, function (result) {
+                            layer.msg(result.msg, function () {
+                                Utilitys.Methods.BtnDisabled("#btn_sub", 0);
+                                if (result.code == 0) {
+                                    layer.closeAll();
+                                    location.reload();
+                                }
+
+                            });
+                        }, 'json');
+                    });
+
+
+                }
+                manager.GetById = function (id) {
+                    $.post('ContactsIndex?handler=GetById', { Id: id }, function (result) {
+                        $("#Id").val(result.id);
+                        $("#ContactName").val(result.contactName);
+                        $("#ContactContent").val(result.contactContent);
+                        $("#ContactType").val(result.contactType);
+                        layui.form.render(null, 'refreshFilter');
+                    }, 'json');
+                }
+
+                manager.addData = function () {
+                    $("#AddData").click(function () {
+                        layer.open({
+                            type: 1,
+                            title: '添加记录',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true,
+                            area: ['360px'],
+                            content: $("#addAndEdit")
+                        });
+
+                    });
+                }
+
+                manager.Updated = function (id) {
+                    manager.GetById(id);
+                    layer.open({
+                        type: 1,
+                        title: '修改记录',
+                        shadeClose: true,
+                        shade: false,
+                        maxmin: true,
+                        area: ['360px'],
+                        content: $("#addAndEdit")
+                    });
+                }
+                manager.BatchRemove = function () {
+                    $("#RemoveData").click(function () {
+                        layer.confirm('确定要批量删除？', {
+                            btn: ['确定', '取消'] //按钮
+                        }, function () {
+                            var ids = new Array();
+                            var sourceData = layui.table.checkStatus('pageData').data;
+                            if (sourceData == null || sourceData.length <= 0) {
+                                layer.msg("未勾选任何行", function () {
+                                    return false;
+                                });
+                                return false;
+                            }
+                            $.each(sourceData, function () {
+                                ids.push(this.hideId);
+                            });
+                            $.post('ContactsIndex?handler=BatchRemove', { Ids: ids.join(",") }, function (result) {
+                                layer.msg(result.msg, function () {
+                                    if (result.code == 0) {
+                                        layer.closeAll();
+                                        location.reload();
+                                    }
+
+                                });
+                            }, 'json');
+                        }, function () {
+                            layer.closeAll();
+                        });
+
+
+                    });
+
+
+                }
+
+                manager.Deleted = function (id) {
+                    layer.confirm('确定要删除？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $.post('ContactsIndex?handler=AddAndEditExc', { Id: id, IsDeleted: 1 }, function (result) {
+                            layer.msg(result.msg, function () {
+                                if (result.code == 0) {
+                                    layer.closeAll();
+                                    location.reload();
+                                }
+
+                            });
+                        }, 'json');
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+
+                manager.Load = function () {
+                    manager.pageTable();
+                    manager.btnSearch();
+                    manager.dateTime();
+                    manager.addData();
+                    manager.AddAndEditExc();
+                    manager.BatchRemove();
+
+                };
+
+                return manager;
+            })({});
+
+            instance.Init = function () {
+                instance.Managers.Load();
+            };
+            return instance;
+        })({});
+
+        $(function () {
+            Instace.Init();
+        });
+    </script>
+
+
+
+}
+
+

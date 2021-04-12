@@ -7,8 +7,8 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.AccountPlugin.Login
 {
     public class LoginIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
-        public LoginIndexModel(ILogger<IndexModel> logger) : base(true)
+        private readonly ILogger<LoginIndexModel> _logger;
+        public LoginIndexModel(ILogger<LoginIndexModel> logger) : base(true)
         {
             _logger = logger;
         }

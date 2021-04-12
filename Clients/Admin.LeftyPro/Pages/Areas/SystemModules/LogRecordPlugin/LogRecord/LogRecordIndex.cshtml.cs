@@ -11,10 +11,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.LogRecordPlugin.LogRecord
 {
     public class LogRecordIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<LogRecordIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public LogRecordIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public LogRecordIndexModel(ILogger<LogRecordIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;

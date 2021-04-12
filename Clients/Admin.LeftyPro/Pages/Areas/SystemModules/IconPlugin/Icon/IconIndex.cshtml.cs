@@ -11,10 +11,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.IconPlugin.Icon
 {
     public class IconIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IconIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public IconIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public IconIndexModel(ILogger<IconIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;

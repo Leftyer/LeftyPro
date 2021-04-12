@@ -12,10 +12,10 @@ namespace Admin.LeftyPro.Pages.Areas.SystemModules.AuthorityPlugin.Authority
 {
     public class AuthorityIndexModel : BaseUtilitys
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<AuthorityIndexModel> _logger;
         private readonly IHostEnvironment _rootInfo;
 
-        public AuthorityIndexModel(ILogger<IndexModel> logger, IHostEnvironment rootInfo)
+        public AuthorityIndexModel(ILogger<AuthorityIndexModel> logger, IHostEnvironment rootInfo)
         {
             _logger = logger;
             _rootInfo = rootInfo;
